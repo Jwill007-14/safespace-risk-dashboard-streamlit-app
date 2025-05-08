@@ -1,4 +1,8 @@
 import streamlit as st
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import altair as alt
 
 st.set_page_config(
     page_title="SafeSpace Risk Dashboard",
@@ -13,12 +17,6 @@ Use the sidebar to explore:
 - 📊 Investment Simulator
 - 🤲 Loan Risk Assessment  
 """)
-
-ort streamlit as st
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import altair as alt
 
 st.title("📊 Investment Simulator")
 
