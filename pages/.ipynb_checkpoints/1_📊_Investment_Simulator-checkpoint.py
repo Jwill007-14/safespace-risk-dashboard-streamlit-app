@@ -1,20 +1,4 @@
 import streamlit as st
-
-st.set_page_config(
-    page_title="SafeSpace Risk Dashboard",
-    layout="wide",
-)
-
-st.title("🏠 Welcome to SafeSpace")
-
-st.markdown("""
-Welcome to the SafeSpace Financial Risk Dashboard!  
-Use the sidebar to explore:
-- 📊 Investment Simulator
-- 🤲 Loan Risk Assessment  
-""")
-
-ort streamlit as st
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -135,7 +119,7 @@ def portfolio_simulator():
     # Portfolio Summary
     if portfolio_returns:
         total_return = sum(portfolio_returns)
-        combined_returns = pd.concat(weighted_returns, axis=1).sum(axis=1)
+        combined_returns = sum(weighted_returns)
         portfolio_std = np.std(combined_returns)
         portfolio_mean = np.mean(combined_returns)
         portfolio_sharpe = portfolio_mean / portfolio_std * np.sqrt(252) if portfolio_std != 0 else 0
@@ -157,48 +141,3 @@ def portfolio_simulator():
         st.line_chart(combined_returns.cumsum())
 
 portfolio_simulator()
-
-st.title("🤲 Loan Risk Assessment")
-
-def loan_risk_assessment():
-    loan_amount = st.number_input("Loan Amount (USD)", min_value=1000, value=5000, step=500)
-    loan_term = st.slider("Loan Term (Years)", 1, 30, 10)
-    interest_rate = st.slider("Interest Rate (%)", 0.0, 15.0, 5.0)
-    credit_score = st.slider("Credit Score", 300, 850, 700)
-    annual_income = st.number_input("Annual Income (USD)", min_value=0, value=50000, step=1000)
-    monthly_debt = st.number_input("Monthly Debt Payments (USD)", min_value=0, value=500, step=50)
-
-    def predict_loan_risk(credit_score, debt_to_income_ratio):
-        if credit_score < 580 or debt_to_income_ratio > 0.5:
-            return "High Risk"
-        elif 580 <= credit_score <= 700 or 0.3 <= debt_to_income_ratio <= 0.5:
-            return "Medium Risk"
-        else:
-            return "Low Risk"
-
-    debt_to_income_ratio = (monthly_debt * 12) / (annual_income + 1e-9)
-    loan_risk = predict_loan_risk(credit_score, debt_to_income_ratio)
-
-    st.write(f"Loan Amount: ${loan_amount:,.2f}")
-    st.write(f"Loan Term: {loan_term} years @ {interest_rate:.2f}%")
-    st.write(f"Debt-to-Income Ratio: {debt_to_income_ratio:.2f}")
-    st.write(f"Credit Score: {credit_score}")
-    st.subheader(f"🔮 Predicted Loan Risk: **{loan_risk}**")
-
-loan_risk_assessment()
-
-
-# import streamlit as st
-
-# # App Config
-# st.set_page_config(page_title="SafeSpace Risk Dashboard", layout="wide")
-
-# # Define the pages
-# main_page = st.Page("investment_simulator.py", title="Investment Simulator", icon="📊")
-# page_2 = st.Page("loan_assessment.py", title="Loan Risk Assessment", icon="🤲")
-
-# # Set up navigation
-# pg = st.navigation([main_page, page_2, page_3])
-
-# # Run the selected page
-# pg.run()
