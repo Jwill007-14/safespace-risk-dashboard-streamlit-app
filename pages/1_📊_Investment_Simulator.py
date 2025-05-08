@@ -141,61 +141,61 @@ def portfolio_simulator():
         st.line_chart(combined_returns.cumsum())
 
          # ----- Risk Score Section -----
-st.markdown("## :warning: Portfolio Risk Score")
+        st.markdown("## :warning: Portfolio Risk Score")
 
-risk_scores = []
-for ticker in selected_tickers:
-    data = df[(df['ticker'] == ticker) & (df['date'] >= pd.to_datetime(date_range[0])) & (df['date'] <= pd.to_datetime(date_range[1]))]
-    if len(data) >= 2:
-        data = data.sort_values('date')
-        data['return'] = data['close_price'].pct_change()
-        data.dropna(inplace=True)
-        std_dev = np.std(data['return']) if not data['return'].empty else 0
-        sharpe_ratio = (data['return'].mean() / std_dev) * np.sqrt(252) if std_dev != 0 else 0
-        max_drawdown = ((data['close_price'].cummax() - data['close_price']) / data['close_price'].cummax()).max()
+        risk_scores = []
+        for ticker in selected_tickers:
+            data = df[(df['ticker'] == ticker) & (df['date'] >= pd.to_datetime(date_range[0])) & (df['date'] <= pd.to_datetime(date_range[1]))]
+            if len(data) >= 2:
+                data = data.sort_values('date')
+                data['return'] = data['close_price'].pct_change()
+                data.dropna(inplace=True)
+                std_dev = np.std(data['return']) if not data['return'].empty else 0
+                sharpe_ratio = (data['return'].mean() / std_dev) * np.sqrt(252) if std_dev != 0 else 0
+                max_drawdown = ((data['close_price'].cummax() - data['close_price']) / data['close_price'].cummax()).max()
         
         # Normalize metrics into a 0-10 risk score
-        volatility_score = min(std_dev * 100, 10)
-        drawdown_score = min(max_drawdown * 10, 10)
-        sharpe_score = max(0, 10 - sharpe_ratio)  # Higher Sharpe = lower risk
+            volatility_score = min(std_dev * 100, 10)
+            drawdown_score = min(max_drawdown * 10, 10)
+            sharpe_score = max(0, 10 - sharpe_ratio)  # Higher Sharpe = lower risk
 
-        total_score = (volatility_score + drawdown_score + sharpe_score) / 3
-        weighted_score = total_score * (allocations[ticker] / 100)
-        risk_scores.append(weighted_score)
+            total_score = (volatility_score + drawdown_score + sharpe_score) / 3
+            weighted_score = total_score * (allocations[ticker] / 100)
+            risk_scores.append(weighted_score)
 
 # Final weighted risk score
-portfolio_risk_score = sum(risk_scores)
-if portfolio_risk_score < 3.5:
-    risk_level = "Low Risk"
-    color = "green"
-elif portfolio_risk_score < 6.5:
-    risk_level = "Moderate Risk"
-    color = "orange"
-else:
-    risk_level = "High Risk"
-    color = "red"
+            portfolio_risk_score = sum(risk_scores)
+                if portfolio_risk_score < 3.5:
+                    risk_level = "Low Risk"
+                    color = "green"
+                elif portfolio_risk_score < 6.5:
+                    risk_level = "Moderate Risk"
+                    color = "orange"
+                else:
+                    risk_level = "High Risk"
+                    color = "red"
 
-st.markdown(f"**Overall Risk Score:** `{portfolio_risk_score:.2f}`")
-fig = go.Figure(go.Indicator(
-    mode="gauge+number+delta",
-    value=portfolio_risk_score,
-    domain={'x': [0, 1], 'y': [0, 1]},
-    title={'text': f"Portfolio Risk Level: {risk_level}", 'font': {'size': 24}},
-    gauge={
-        'axis': {'range': [0, 10], 'tickwidth': 1, 'tickcolor': "darkgray"},
-        'bar': {'color': color},
-        'steps': [
-            {'range': [0, 3.5], 'color': "lightgreen"},
-            {'range': [3.5, 6.5], 'color': "orange"},
-            {'range': [6.5, 10], 'color': "red"}
-        ],
-        'threshold': {
-            'line': {'color': "black", 'width': 4},
-            'thickness': 0.75,
-            'value': portfolio_risk_score
-        }
-    }
-))
-st.plotly_chart(fig, use_container_width=True)
+        st.markdown(f"**Overall Risk Score:** `{portfolio_risk_score:.2f}`")
+        fig = go.Figure(go.Indicator(
+            mode="gauge+number+delta",
+            value=portfolio_risk_score,
+            domain={'x': [0, 1], 'y': [0, 1]},
+            title={'text': f"Portfolio Risk Level: {risk_level}", 'font': {'size': 24}},
+            gauge={
+                'axis': {'range': [0, 10], 'tickwidth': 1, 'tickcolor': "darkgray"},
+                'bar': {'color': color},
+                'steps': [
+                {'range': [0, 3.5], 'color': "lightgreen"},
+                {'range': [3.5, 6.5], 'color': "orange"},
+                {'range': [6.5, 10], 'color': "red"}
+                ],
+                'threshold': {
+                    'line': {'color': "black", 'width': 4},
+                    'thickness': 0.75,
+                    'value': portfolio_risk_score
+                }
+            }
+        ))
+        st.plotly_chart(fig, use_container_width=True)
 
 portfolio_simulator()
