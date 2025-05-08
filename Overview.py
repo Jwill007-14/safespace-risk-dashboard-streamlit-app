@@ -15,9 +15,9 @@ st.markdown("""
 Welcome to the SafeSpace Financial Risk Dashboard!  
 Use the sidebar to explore:
 - 📊 Investment Simulator
-            A quick and easy way to make a stock portfolio and assertain the risk associated with the stocks chosen in the portfolio.
+            -A quick and easy way to make a stock portfolio and assertain the risk associated with the stocks chosen in the portfolio.
 - 🤲 Loan Risk Assessment
-            A loan calculator to determine your loan risk.
+            -A loan calculator to determine your loan risk.
 """)
 
 # import streamlit as st
