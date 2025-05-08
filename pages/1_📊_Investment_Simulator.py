@@ -165,15 +165,15 @@ def portfolio_simulator():
 
 # Final weighted risk score
             portfolio_risk_score = sum(risk_scores)
-                if portfolio_risk_score < 3.5:
-                    risk_level = "Low Risk"
-                    color = "green"
-                elif portfolio_risk_score < 6.5:
-                    risk_level = "Moderate Risk"
-                    color = "orange"
-                else:
-                    risk_level = "High Risk"
-                    color = "red"
+            if portfolio_risk_score < 3.5:
+                risk_level = "Low Risk"
+                color = "green"
+            elif portfolio_risk_score < 6.5:
+                risk_level = "Moderate Risk"
+                color = "orange"
+            else:
+                risk_level = "High Risk"
+                color = "red"
 
         st.markdown(f"**Overall Risk Score:** `{portfolio_risk_score:.2f}`")
         fig = go.Figure(go.Indicator(
